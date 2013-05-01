@@ -4,9 +4,9 @@ class Present:
     self._ks = ks
 
     if self._ks == 80:
-      self._mask = 0xffffffffffffffffffff
+      self._mask = 0xffffffffffffffffffff # 80-bit mask
     else:
-      self._mask = 0xffffffffffffffffffffffffffffffff
+      self._mask = 0xffffffffffffffffffffffffffffffff # 128-bit mask
 
     self._sbox = [0xc,0x5,0x6,0xb,0x9,0x0,0xa,0xd,0x3,0xe,0xf,0x8,0x4,0x7,0x1,0x2]
 
@@ -39,7 +39,6 @@ class Present:
 
     return self._s
 
-
   def _add_round_key(self):
     self._s ^= self._extract_key()
 
@@ -48,26 +47,17 @@ class Present:
       s = ( self._s >> ( 60 - 4*i ) ) & 0xf # extract 4-bits from the state
       self._s ^= ( ( self._sbox[s] ^ s ) << ( 60 - 4*i ) )
 
-
   def _p_layer(self):
     s = 0
     for i in xrange(64):
       s ^= ( (self._s >> i ) & 0x1 ) << self._p[i]
     self._s = s
 
-
   def _extract_key(self):
     # extracts a 64-bit round key from the key register
     return self._key_reg >> self._ks - 64
 
-
-
-  # 0xffffffff 32-bit
-  # 0xffffffffffffffff 64-bit
-  # 0xffffffffffffffffffff 80-bit
-  # 0xffffffffffffffffffffffffffffffff 128-bit
   def _update_key(self,r):
-
     # shift key register cyclically 61 positions to the left
     self._key_reg = ( ( self._key_reg << 61 ) & self._mask | ( self._key_reg >> self._ks - 61 ) )
 
@@ -80,5 +70,4 @@ class Present:
       k1 = (self._key_reg >> 120) & 0xf
       self._key_reg ^= ( ( ( ( self._sbox[k0] ^ k0 ) << 124 ) ^ ( self._sbox[k1] ^ k1 ) << 120 ) ) 
       self._key_reg ^= r << 62
-
 
