@@ -17,10 +17,7 @@ class Present:
       12, 28, 44, 60, 13, 29, 45, 61, 14, 30, 46, 62, 15, 31, 47, 63
     ]
 
-  def __call__(self,m,k,f=None):
-
-    if f == None:
-      f = (0,0)
+  def __call__(self,m,k,f=(0,0)):
 
     # the cipher state
     self._s = m
