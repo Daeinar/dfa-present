@@ -27,12 +27,13 @@ class Present:
 
     for r in xrange(1,32):
       self._add_round_key()
+      self._update_key(r)
 
       # fault injection
       if f[0] == r:
         self._key_reg ^= f[1]
 
-      self._update_key(r)
+
       self._sbox_layer()
       self._p_layer()
     self._add_round_key()

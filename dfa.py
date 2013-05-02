@@ -10,7 +10,7 @@ if __name__ == '__main__':
   p80 = Present(ks=80)
   m = 0x0000000000000000
   k = 0x00000000000000000000
-  f = (31,0x00000000009000000000) # (fault round, 80-bit fault value)
+  f = (30,0x00000000009000000000) # (fault round, 80-bit fault value)
   c  = p80(m,k)
   cf = p80(m,k,f)
   print "c      = {:016x}".format(c)
